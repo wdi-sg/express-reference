@@ -4,6 +4,11 @@ const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
 
+// post request libs
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override')
+
+
 /**
  * ===================================
  * Configurations and set up
@@ -12,6 +17,11 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
+
+
+// post request use
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride('_method'))
 
 // Set handlebars to be the default view engine
 app.engine('handlebars', handlebars.create().engine);
@@ -26,7 +36,7 @@ app.set('view engine', 'handlebars');
 app.get('/:id', (request, response) => {
 
     // get my json from the file
-  jsonfile.readFile(FILE, function(err, obj) {
+  jsonfile.readFile(FILE, (err, obj) => {
 
     // obj is the pokedex json file
 
@@ -56,6 +66,10 @@ app.get('/:id', (request, response) => {
   });
 });
 
+app.get('/new', (req, res) => {
+  // send response with some data (a HTML file)
+  res.render('new');
+});
 
 /**
  * ===================================
