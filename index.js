@@ -1,11 +1,8 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const methodOverride = require('method-override')
-const exphbs = require('express-handlebars');
+const handlebars = require('express-handlebars');
 const jsonfile = require('jsonfile');
 
-// const jsonfile = require('jsonfile');
-const FILE = 'data.json';
+const FILE = 'pokedex.json';
 
 /**
  * ===================================
@@ -16,12 +13,8 @@ const FILE = 'data.json';
 // Init express app
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(methodOverride('_method'))
-
-
 // Set handlebars to be the default view engine
-app.engine('handlebars', exphbs.create().engine);
+app.engine('handlebars', handlebars.create().engine);
 app.set('view engine', 'handlebars');
 
 /**
@@ -30,39 +23,37 @@ app.set('view engine', 'handlebars');
  * ===================================
  */
 
-app.get('/pokemon/names/:pokemon', (req, res) => {
-  // send response with some data (a string)
-  res.send(req.params.pokemon);
-});
+app.get('/:id', (request, response) => {
 
-app.get('/', (req, res) => {
-  // send response with some data (a HTML file)
-  res.render('home');
-});
+    // get my json from the file
+  jsonfile.readFile(FILE, function(err, obj) {
 
-app.get('/pokemon/new', (req, res) => {
-  // send response with some data (a HTML file)
-  res.render('new');
-});
+    // obj is the pokedex json file
 
-app.post('/pokemon', (req, res) => {
-  let params = req.body;
+    // deal with the request
+    let name = request.params.id;
 
-  let pokemon = {
-    name:params.name,
-    height:params.height,
-  };
+    let pokemon = null;
 
-  jsonfile.readFile(FILE, (err, obj) => {
+    for( let i=0; i<obj.pokemon.length; i++ ){
+      if( obj.pokemon[i].id == request.params.id ){
+        pokemon = obj.pokemon[i];
+      }
+    }
 
-    obj["pokemon"].push( pokemon );
+    if( pokemon === null ){
 
-    jsonfile.writeFile(FILE, obj, (err) => {
-      console.error(err)
-    });
+      response.render('404');
+    }else{
+      let context = {
+        pokemon : pokemon
+      };
+
+      // send something back
+      response.render('pokemon', context);
+
+    }
   });
-
-  res.render('home');
 });
 
 
