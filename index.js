@@ -32,6 +32,85 @@ app.set('view engine', 'handlebars');
  * Routes
  * ===================================
  */
+app.get('/edit/:id', (request, response) => {
+  // send response with some data (a HTML file)
+
+
+    // get my json from the file
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    // obj is the pokedex json file
+
+    // deal with the request
+    let name = request.params.id;
+
+    let pokemon = null;
+
+    for( let i=0; i<obj.pokemon.length; i++ ){
+      if( obj.pokemon[i].id == request.params.id ){
+        pokemon = obj.pokemon[i];
+      }
+    }
+
+    if( pokemon === null ){
+
+      response.render('404');
+    }else{
+      let context = {
+        pokemon : pokemon
+      };
+
+      // send something back
+      response.render('edit', context);
+
+    }
+  });
+
+});
+
+app.post('/edit/:id', (request, response) => {
+  // send response with some data (a HTML file)
+
+
+    // get my json from the file
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    // obj is the pokedex json file
+
+    // deal with the request
+    let name = request.params.id;
+
+    let pokemon = null;
+
+    for( let i=0; i<obj.pokemon.length; i++ ){
+      if( obj.pokemon[i].id == request.params.id ){
+        console.log( request.body );
+        obj.pokemon[i] = request.body;
+        pokemon = obj.pokemon[i];
+      }
+    }
+
+    if( pokemon === null ){
+
+      response.render('404');
+    }else{
+
+      jsonfile.writeFile(FILE, obj, (err) => {
+        console.error(err)
+
+        let context = {
+          pokemon : pokemon
+        };
+
+        // send something back
+        response.render('pokemon', context);
+      });
+
+    }
+  });
+
+});
+
 app.get('/new', (request, response) => {
   // send response with some data (a HTML file)
   response.render('new');
