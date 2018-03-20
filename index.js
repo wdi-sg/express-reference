@@ -8,6 +8,8 @@ const FILE = 'pokedex.json';
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override')
 
+const cookieParser = require('cookie-parser')
+
 
 /**
  * ===================================
@@ -22,6 +24,8 @@ const app = express();
 // post request use
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'))
+
+app.use(cookieParser())
 
 // Set handlebars to be the default view engine
 app.engine('handlebars', handlebars.create().engine);
@@ -166,6 +170,25 @@ app.get('/:id', (request, response) => {
 
     }
   });
+});
+
+app.get('/', (request, response) => {
+
+  var visits = request.cookies['visits'];
+
+  if( visits === undefined ){
+    visits = 1;
+  }else{
+    visits = parseInt( visits ) + 1;
+  }
+
+  response.cookie('visits', visits);
+
+  let context = {
+    visits : visits
+  };
+
+  response.render('home', context);
 });
 
 /**
