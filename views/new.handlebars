@@ -5,81 +5,49 @@
   <title>Pokemon</title>
 </head>
 <body>
-  <ul class="pokemon-list">
-    <li class="pokemon-attribute">
-      id:{{pokemon.id}}
-    </li>
-    <li class="pokemon-attribute">
-      num:{{pokemon.num}}
-    </li>
-    <li class="pokemon-attribute">
-      name:{{pokemon.name}}
-    </li>
-    <li class="pokemon-attribute">
-      img:{{pokemon.img}}
-    </li>
-    <li class="pokemon-attribute">
-      type:
-      <ul>
-      {{#each pokemon.type}}
-        {{this}}
-      {{/each}}
-      </ul>
-    </li>
-    <li class="pokemon-attribute">
-      height:{{pokemon.height}}
-    </li>
-    <li class="pokemon-attribute">
-      weight:{{pokemon.weight}}
-    </li>
-    <li class="pokemon-attribute">
-      candy:{{pokemon.candy}}
-    </li>
-    <li class="pokemon-attribute">
-      candy_count:{{pokemon.candy_count}}
-    </li>
-    <li class="pokemon-attribute">
-      egg:{{pokemon.egg}}
-    </li>
-    <li class="pokemon-attribute">
-      spawn_chance:{{pokemon.chance}}
-    </li>
-    <li class="pokemon-attribute">
-      avg_spawns:{{pokemon.avg_spawns}}
-    </li>
-    <li class="pokemon-attribute">
-      spawn_time:{{pokemon.spawn_time}}
-    </li>
-    <li class="pokemon-attribute">
-      spawn_chance:{{pokemon.spawn_chance}}
-    </li>
-    <li class="pokemon-attribute">
-      multipliers:
-      <ul>
-      {{#each pokemon.multipliers}}
-        {{this}}
-      {{/each}}
-      </ul>
-    </li>
-    <li class="pokemon-attribute">
-      weaknesses:
-      <ul>
-      {{#each pokemon.weaknesses}}
-        {{this}}
-      {{/each}}
-      </ul>
-    </li>
-    <li class="pokemon-attribute">
-      next_evolution:
-      <ul>
-      {{#each pokemon.next_evolution}}
-        num:{{this.num}}
-        name:{{this.name}}
-      {{/each}}
-      </ul>
-    </li>
-  </ul>
+  <form class="pokemon-form" method="POST" action="/new">
 
+    <div class="pokemon-attribute">
+      id:<input name="id" type="text"/>
+    </div>
+    <div class="pokemon-attribute">
+      num:<input name="num" type="text"/>
+    </div>
+    <div class="pokemon-attribute">
+      name:<input name="name" type="text"/>
+    </div>
+    <div class="pokemon-attribute">
+      img:<input name="img" type="text"/>
+    </div>
+    <div class="pokemon-attribute">
+      height:<input name="height" type="text"/>
+    </div>
+    <div class="pokemon-attribute">
+      weight:<input name="weight" type="text"/>
+    </div>
+    <div class="pokemon-attribute">
+      candy:<input name="candy" type="text"/>
+    </div>
+    <div class="pokemon-attribute">
+      candy_count:<input name="candy_count" type="text"/>
+    </div>
+    <div class="pokemon-attribute">
+      egg:<input name="egg" type="text"/>
+    </div>
+    <div class="pokemon-attribute">
+      spawn_chance:<input name="spawn_cahnce" type="text"/>
+    </div>
+    <div class="pokemon-attribute">
+      avg_spwans:<input name="avg_spawns" type="text"/>
+    </div>
+    <div class="pokemon-attribute">
+      spawn_time:<input name="spawn_time" type="text"/>
+    </div>
+    <div class="pokemon-attribute">
+      spawn_chance:<input name="spawn_chance" type="text"/>
+    </div>
+    <input name="submit" type="submit"/>
+  </form>
 </body>
 </html>
 

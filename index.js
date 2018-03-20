@@ -32,6 +32,29 @@ app.set('view engine', 'handlebars');
  * Routes
  * ===================================
  */
+app.get('/new', (request, response) => {
+  // send response with some data (a HTML file)
+  response.render('new');
+});
+
+app.post('/new', (request, response) => {
+
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    let new_pokemon = request.body;
+
+    obj.pokemon.push( new_pokemon );
+
+    jsonfile.writeFile(FILE, obj, (err) => {
+      console.error(err)
+      response.render('404');
+    });
+  });
+
+
+  // send response with some data (a HTML file)
+});
 
 app.get('/:id', (request, response) => {
 
@@ -64,11 +87,6 @@ app.get('/:id', (request, response) => {
 
     }
   });
-});
-
-app.get('/new', (req, res) => {
-  // send response with some data (a HTML file)
-  res.render('new');
 });
 
 /**

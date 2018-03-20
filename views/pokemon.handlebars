@@ -19,14 +19,6 @@
       img:{{pokemon.img}}
     </li>
     <li class="pokemon-attribute">
-      type:
-      <ul>
-      {{#each pokemon.type}}
-        {{this}}
-      {{/each}}
-      </ul>
-    </li>
-    <li class="pokemon-attribute">
       height:{{pokemon.height}}
     </li>
     <li class="pokemon-attribute">
@@ -52,31 +44,6 @@
     </li>
     <li class="pokemon-attribute">
       spawn_chance:{{pokemon.spawn_chance}}
-    </li>
-    <li class="pokemon-attribute">
-      multipliers:
-      <ul>
-      {{#each pokemon.multipliers}}
-        {{this}}
-      {{/each}}
-      </ul>
-    </li>
-    <li class="pokemon-attribute">
-      weaknesses:
-      <ul>
-      {{#each pokemon.weaknesses}}
-        {{this}}
-      {{/each}}
-      </ul>
-    </li>
-    <li class="pokemon-attribute">
-      next_evolution:
-      <ul>
-      {{#each pokemon.next_evolution}}
-        num:{{this.num}}
-        name:{{this.name}}
-      {{/each}}
-      </ul>
     </li>
   </ul>
 
