@@ -6,7 +6,6 @@ const FILE = 'pokedex.json';
 
 // post request libs
 const bodyParser = require('body-parser');
-const methodOverride = require('method-override')
 
 
 /**
@@ -21,7 +20,6 @@ const app = express();
 
 // post request use
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(methodOverride('_method'))
 
 // Set handlebars to be the default view engine
 app.engine('handlebars', handlebars.create().engine);
