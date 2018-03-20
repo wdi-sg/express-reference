@@ -32,7 +32,7 @@ app.set('view engine', 'handlebars');
  * Routes
  * ===================================
  */
-app.get('/edit/:id', (request, response) => {
+app.put('/edit/:id', (request, response) => {
   // send response with some data (a HTML file)
 
 
