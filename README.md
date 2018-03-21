@@ -12,8 +12,8 @@ Links to student-facing repos:
 
 | student repo                |  branch      |   topic                                    |
 | ---                         |  ---         |   ---                                      |
-| [pokedex-express](1)        |  master      |   basic Node + Express + jsonfile + GET    |
-| [pokedex-express-post](2)   |  post        |   + POST                                   |
+| [pokedex-express][1]        |  master      |   basic Node + Express + jsonfile + GET    |
+| [pokedex-express-post][2]   |  post        |   + POST                                   |
 | pokedex-express-update      |  update      |   + UPDATE                                 |
 | pokedex-express-auth        |  auth        |   + authentication                         |
 | pokedex-express-cookie      |  cookie      |   + cookie                                 |
