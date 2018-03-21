@@ -24,38 +24,31 @@ app.set('view engine', 'handlebars');
  */
 
 app.get('/:id', (request, response) => {
+  // get json from specified file
+  jsonfile.readFile(FILE, (err, obj) => {
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = request.params.id;
 
-    // get my json from the file
-  jsonfile.readFile(FILE, function(err, obj) {
+    // find pokemon by id from the pokedex json file
+    // (note: find() is a built-in method of JavaScript arrays)
+    let pokemon = obj.pokemon.find((currentPokemon) => {
+      return currentPokemon.id === parseInt(inputId, 10);
+    });
 
-    // obj is the pokedex json file
-
-    // deal with the request
-    let name = request.params.id;
-
-    let pokemon = null;
-
-    for( let i=0; i<obj.pokemon.length; i++ ){
-      if( obj.pokemon[i].id == request.params.id ){
-        pokemon = obj.pokemon[i];
-      }
-    }
-
-    if( pokemon === null ){
-
+    if (pokemon === undefined) {
+      // send 404 back
       response.render('404');
-    }else{
+    } else {
       let context = {
-        pokemon : pokemon
+        pokemon: pokemon
       };
 
-      // send something back
+      // send html file back with pokemon's data
       response.render('pokemon', context);
-
     }
   });
 });
-
 
 /**
  * ===================================
