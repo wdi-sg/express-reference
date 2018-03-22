@@ -35,31 +35,21 @@ app.get('/new', (request, response) => {
   response.render('new');
 });
 
-app.post('/', (request, response) => {
-  jsonfile.readFile(FILE, (err, obj) => {
-    let newPokemon = request.body;
-
-    obj.pokemon.push(newPokemon);
-
-    jsonfile.writeFile(FILE, obj, (err) => {
-      console.error(err);
-      response.render('home', { pokemon: obj.pokemon });
-    });
-  });
-});
-
 app.get('/:id', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
-    let inputId = request.params.id;
+    if (err) console.error(err);
 
+    // attempt to retrieve the requested pokemon
+    let inputId = request.params.id;
     let pokemon = obj.pokemon.find((currentPokemon) => {
       return currentPokemon.id === parseInt(inputId, 10);
     });
 
     if (pokemon === undefined) {
-      // send 404 back
+      // return 404 HTML page if pokemon not found
       response.render('404');
     } else {
+      // return pokemon HTML page if found
       let context = {
         pokemon: pokemon
       };
@@ -71,7 +61,22 @@ app.get('/:id', (request, response) => {
 
 app.get('/', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
+    if (err) console.error(err);
     response.render('home', { pokemon: obj.pokemon });
+  });
+});
+
+app.post('/', (request, response) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    if (err) console.error(err);
+
+    let newPokemon = request.body;
+    obj.pokemon.push(newPokemon);
+
+    jsonfile.writeFile(FILE, obj, (err2) => {
+      if (err2) console.error(err2);
+      response.render('home', { pokemon: obj.pokemon });
+    });
   });
 });
 
