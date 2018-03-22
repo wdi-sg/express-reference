@@ -12,13 +12,13 @@ Every assignment has a corresponding basic solution stored as a BRANCH in this r
 
 Links to student-facing repos:
 
-| student repo                      |  branch         |   topic                                   |
-| ---                               |  ---            |   ---                                     |
-| [pokedex-express][1]              |  master         |   basic Node + Express + jsonfile + GET   |
-| [pokedex-express-post][2]         |  post           |   + POST                                  |
-| pokedex-express-update-delete[3]  |  update-delete  |   + UPDATE + DELETE + cookie              |
-| pokedex-express-auth              |  auth           |   + authentication                        |
-| pokedex-express-sql               |  sql            |   + sql                                   |
+| student repo                        |  branch         |   topic                                   |
+| ---                                 |  ---            |   ---                                     |
+| [pokedex-express][1]                |  master         |   basic Node + Express + jsonfile + GET   |
+| [pokedex-express-post][2]           |  post           |   + POST                                  |
+| [pokedex-express-update-delete][3]  |  update-delete  |   + UPDATE + DELETE + cookie              |
+| pokedex-express-auth                |  auth           |   + authentication                        |
+| pokedex-express-sql                 |  sql            |   + sql                                   |
 
 [1]: https://github.com/wdi-sg/pokedex-express
 [2]: https://github.com/wdi-sg/pokedex-express-post
