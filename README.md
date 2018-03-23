@@ -1,4 +1,7 @@
-# Express Reference
+# Express Reference - MVC Refactor
+
+This is a refactor of the auth express app.
+To see the differences you can look at this comparison: [https://github.com/wdi-sg/express-reference/compare/auth...mvc?expand=1](https://github.com/wdi-sg/express-reference/compare/auth...mvc?expand=1)
 
 This repository is _not_ meant to be student-facing. It is the source materials for multiple express-related assignments for Unit 2.
 
