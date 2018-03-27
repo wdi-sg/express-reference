@@ -1,16 +1,12 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const methodOverride = require('method-override');
-const exphbs = require('express-handlebars');
-const { Client } = require('pg');
+const handlebars = require('express-handlebars');
 
-// Initialise postgres client
-const client = new Client({
-  user: 'akira',
-  host: '127.0.0.1',
-  database: 'pokemons',
-  port: 5432,
-});
+// post request libs
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override')
+
+const cookieParser = require('cookie-parser')
+
 
 /**
  * ===================================
@@ -21,60 +17,57 @@ const client = new Client({
 // Init express app
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
 
+// post request use
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride('_method'))
+
+app.use(cookieParser());
 
 // Set handlebars to be the default view engine
-app.engine('handlebars', exphbs.create().engine);
+app.engine('handlebars', handlebars.create().engine);
 app.set('view engine', 'handlebars');
 
+const db = require('./db');
 
-/**
- * ===================================
- * Routes
- * ===================================
- */
+require('./routes')(app, db);
 
-app.get('/', (req, res) => {
-  // query database for all pokemon
+app.get('/', (request, response) => {
 
-  // respond with HTML page displaying all pokemon
-});
+  let visits = request.cookies['visits'];
+  let logged_in = request.cookies['logged_in'];
 
-app.get('/new', (request, response) => {
-  // respond with HTML page with form to create new pokemon
-  response.render('new');
-});
+  if( visits === undefined ){
+    visits = 1;
+  }else{
+    visits = parseInt( visits ) + 1;
+  }
 
+  response.cookie('visits', visits);
 
-app.post('/pokemon', (req, response) => {
-  let params = req.body;
+  db.pool.query('SELECT * FROM pokemon', (error, queryResult) => {
+    let context = {
+      visits : visits,
+      logged_in : logged_in,
+      pokemon: queryResult.rows
+    };
 
-  const queryString = 'INSERT INTO pokemon(name, height) VALUES($1, $2)'
-  const values = [params.name, params.height];
-
-  client.connect((err) => {
-    if (err) console.error('connection error:', err.stack);
-
-    client.query(queryString, values, (err, res) => {
-      if (err) {
-        console.error('query error:', err.stack);
-      } else {
-        console.log('query result:', res);
-
-        // redirect to home page
-        response.redirect('/');
-      }
-      client.end();
-    });
+    response.render('home', context);
   });
-});
 
+});
 
 /**
  * ===================================
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+const server = app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+
+server.on('close', () => {
+  console.log('Closed express server')
+
+  db.pool.end(() => {
+    console.log('Shut down connection pool')
+  });
+});
