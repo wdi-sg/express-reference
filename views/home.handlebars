@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Testing a View</title>
-  </head>
-  <body>
-    <h1>Hello, welcome to the homepage</h1>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pokedex</title>
+</head>
+<body>
+  <h1>Welcome to the online Pokedex!</h1>
+  {{#each pokemon}}
+    <li>{{this.name}}</li>
+  {{/each}}
+</body>
 </html>

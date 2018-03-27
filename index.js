@@ -1,25 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const methodOverride = require('method-override')
+const methodOverride = require('method-override');
 const exphbs = require('express-handlebars');
-const jsonfile = require('jsonfile');
+const { Client } = require('pg');
 
-const { Client } = require('pg')
-
+// Initialise postgres client
 const client = new Client({
   user: 'akira',
   host: '127.0.0.1',
   database: 'pokemons',
   port: 5432,
 });
-
-// const jsonfile = require('jsonfile');
-const FILE = 'data.json';
-
-
-// how to init db
-//createdb pokemons -U akira
-//psql -U akira -d pokemons -a -f seed.sql
 
 /**
  * ===================================
@@ -31,7 +22,7 @@ const FILE = 'data.json';
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(methodOverride('_method'))
+app.use(methodOverride('_method'));
 
 
 // Set handlebars to be the default view engine
@@ -45,47 +36,38 @@ app.set('view engine', 'handlebars');
  * ===================================
  */
 
-app.get('/pokemon/names/:pokemon', (req, res) => {
-  // send response with some data (a string)
-  res.send(req.params.pokemon);
-});
-
 app.get('/', (req, res) => {
-  // send response with some data (a HTML file)
-  res.render('home');
+  // query database for all pokemon
+
+  // respond with HTML page displaying all pokemon
 });
 
-app.get('/pokemon/new', (req, res) => {
-  // send response with some data (a HTML file)
-  res.render('new');
+app.get('/new', (request, response) => {
+  // respond with HTML page with form to create new pokemon
+  response.render('new');
 });
+
 
 app.post('/pokemon', (req, response) => {
   let params = req.body;
 
-  const text = 'INSERT INTO pokemon(name, height) VALUES($1, $2)'
+  const queryString = 'INSERT INTO pokemon(name, height) VALUES($1, $2)'
   const values = [params.name, params.height];
 
   client.connect((err) => {
+    if (err) console.error('connection error:', err.stack);
 
-    //TODO: check for connection error
-
-    client.query(text, values, (err, res) => {
+    client.query(queryString, values, (err, res) => {
       if (err) {
-        console.log(err.stack);
+        console.error('query error:', err.stack);
       } else {
-        console.log(res.rows[0]);
-        // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
-        // render the id's page?
-        // res.render('pokemon');
-        // or redirect
-        response.render('home');
+        console.log('query result:', res);
 
+        // redirect to home page
+        response.redirect('/');
       }
     });
-
   });
-
 });
 
 
