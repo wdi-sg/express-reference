@@ -1,3 +1,5 @@
+const db = require('../db');
+
 /**
  * ===========================================
  * Controller logic
@@ -7,8 +9,7 @@ const newForm = (request, response) => {
   response.render('user/new');
 };
 
-const create = (db) => {
-  return (request, response) => {
+const create = (request, response) => {
     // use user model method `create` to create new user entry in db
     db.user.create(request.body, (error, queryResult) => {
       // queryResult of creation is not useful to us, so we ignore it
@@ -33,7 +34,6 @@ const create = (db) => {
       // redirect to home page after creation
       response.redirect('/');
     });
-  };
 };
 
 const logout = (request, response) => {
