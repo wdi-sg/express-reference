@@ -15,7 +15,7 @@ pool.on('error', function (err) {
 })
 
 module.exports = {
-  pool,
+  pool:pool,
   pokemon : pokemon(pool),
   query: (text, params, callback) => {
     return pool.query(text, params, callback)
