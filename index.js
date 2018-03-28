@@ -30,7 +30,7 @@ app.set('view engine', 'handlebars');
 
 const db = require('./db');
 
-require('./routes')(app, db);
+require('./routes')(app);
 
 app.get('/', (request, response) => {
 

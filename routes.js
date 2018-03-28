@@ -1,7 +1,7 @@
 const pokemon = require('./controllers/pokemon');
 const users = require('./controllers/users');
 
-module.exports = (app, db) => {
+module.exports = (app) => {
 
   /*
    *  =========================================
@@ -34,10 +34,10 @@ module.exports = (app, db) => {
    *  =========================================
    */
 
-  app.get('/pokemon/:id/edit', pokemon.updateForm(db));
-  app.post('/pokemon/edit/:id', pokemon.update(db));
+  app.get('/pokemon/:id/edit', pokemon.updateForm);
+  app.post('/pokemon/edit/:id', pokemon.update);
   app.get('/pokemon/new', pokemon.createForm);
-  app.post('/pokemon/new', pokemon.create(db));
+  app.post('/pokemon/new', pokemon.create);
 
-  app.get('/pokemon/:id', pokemon.get(db));
+  app.get('/pokemon/:id', pokemon.get);
 };

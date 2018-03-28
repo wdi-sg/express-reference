@@ -84,7 +84,7 @@ module.exports = {
     response.render('new');
   },
 
-  create: (db) => (request, response) => {
+  create: (request, response) => {
     db.pokemon.create( request.body, (error, queryResult) => {
 
         if(error) {
@@ -105,7 +105,7 @@ module.exports = {
     // send response with some data (a HTML file)
   },
 
-  get: (db) => (request, response) => {
+  get: (request, response) => {
 
     db.pokemon.get( request.params.id, (error, queryResult) => {
         if(error) {
