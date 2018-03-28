@@ -1,6 +1,8 @@
 const pg = require('pg');
 const pokemon = require('./models/pokemon');
 const user = require('./models/user');
+const url = require('url');
+
 
 var configs;
 
@@ -20,7 +22,7 @@ if( process.env.DATABASE_URL ){
 
 }else{
   configs = {
-    user: 'postgres',
+    user: 'akira',
     host: '127.0.0.1',
     database: 'pokemons',
     port: 5432
