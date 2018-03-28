@@ -1,8 +1,16 @@
+/**
+ * ===========================================
+ * Export model functions as a module
+ * ===========================================
+ */
 module.exports = (db) => {
+  // `db` is accessible within this function scope
   return {
-    create : (pokemon, callback) => {
-
-      let values = [
+    create: (pokemon, callback) => {
+      // set up query
+      const queryString = `INSERT INTO pokemons (name, num, img, weight, height)
+        VALUES ($1, $2, $3, $4, $5)`;
+      const values = [
         pokemon.name,
         pokemon.num,
         pokemon.img,
@@ -10,18 +18,19 @@ module.exports = (db) => {
         pokemon.height
       ];
 
-      db.query('INSERT INTO pokemon (name, num, img, weight, height) VALUES ($1, $2, $3, $4, $5)', values, (error, queryResult) => {
-        callback( error, queryResult );
+      // execute query
+      db.query(queryString, values, (err, queryResult) => {
+        // invoke callback function with results after query has executed
+        callback(err, queryResult);
       });
     },
 
-    get : (id, callback) => {
+    get: (id, callback) => {
+      const values = [id];
 
-      let values = [id];
-
-      db.query('SELECT * from pokemon WHERE id=$1', values, (error, queryResult) => {
-        callback( error, queryResult );
+      db.query('SELECT * from pokemons WHERE id=$1', values, (error, queryResult) => {
+        callback(error, queryResult);
       });
     }
   };
-}
+};
