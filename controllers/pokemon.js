@@ -1,119 +1,74 @@
-const jsonfile = require('jsonfile');
-const FILE = '../pokedex.json';
+/**
+ * ===========================================
+ * Controller logic
+ * ===========================================
+ */
+const get = (db) => {
+  return (request, response) => {
+    // use pokemon model method `get` to retrieve pokemon data
+    db.pokemon.get(request.params.id, (error, queryResult) => {
+      // queryResult contains pokemon data returned from the pokemon model
+      if (error) {
+        console.error('error getting pokemon:', error);
+        response.sendStatus(500);
+      } else {
+        // render pokemon.handlebars in the pokemon folder
+        response.render('pokemon/pokemon', { pokemon: queryResult.rows[0] });
+      }
+    });
+  };
+};
 
+const updateForm = (db) => {
+  return (request, response) => {
+    // TODO: Add logic here
+  };
+};
+
+const update = (db) => {
+  return (request, response) => {
+    // TODO: Add logic here
+  };
+};
+
+const createForm = (request, response) => {
+  response.render('pokemon/new');
+};
+
+const create = (db) => {
+  return (request, response) => {
+    // use pokemon model method `create` to create new pokemon entry in db
+    db.pokemon.create(request.body, (error, queryResult) => {
+      // queryResult of creation is not useful to us, so we ignore it
+      // (console log it to see for yourself)
+      // (you can choose to omit it completely from the function parameters)
+
+      if (error) {
+        console.error('error getting pokemon:', error);
+        response.sendStatus(500);
+      }
+
+      if (queryResult.rowCount >= 1) {
+        console.log('Pokemon created successfully');
+      } else {
+        console.log('Pokemon could not be created');
+      }
+
+      // redirect to home page after creation
+      response.redirect('/');
+    });
+  };
+};
+
+/**
+ * ===========================================
+ * Export controller functions as a module
+ * ===========================================
+ */
 module.exports = {
-  updateForm: (db) => (request, response) => {
-    // send response with some data (a HTML file)
-
-
-      // get my json from the file
-    jsonfile.readFile(FILE, (err, obj) => {
-
-      // obj is the pokedex json file
-
-      // deal with the request
-      let name = request.params.id;
-
-      let pokemon = null;
-
-      for( let i=0; i<obj.pokemon.length; i++ ){
-        if( obj.pokemon[i].id == request.params.id ){
-          pokemon = obj.pokemon[i];
-        }
-      }
-
-      if( pokemon === null ){
-
-        response.render('404');
-      }else{
-        let context = {
-          pokemon : pokemon
-        };
-
-        // send something back
-        response.render('edit', context);
-
-      }
-    });
-
-  },
-  update: (db) => (request, response) => {
-    // send response with some data (a HTML file)
-
-
-    // get my json from the file
-    jsonfile.readFile(FILE, (err, obj) => {
-
-      // obj is the pokedex json file
-
-      // deal with the request
-      let name = request.params.id;
-
-      let pokemon = null;
-
-      for( let i=0; i<obj.pokemon.length; i++ ){
-        if( obj.pokemon[i].id == request.params.id ){
-          console.log( request.body );
-          obj.pokemon[i] = request.body;
-          pokemon = obj.pokemon[i];
-        }
-      }
-
-      if( pokemon === null ){
-
-        response.render('404');
-      }else{
-
-        jsonfile.writeFile(FILE, obj, (err) => {
-          console.error(err)
-
-          let context = {
-            pokemon : pokemon
-          };
-
-          // send something back
-          response.render('pokemon', context);
-        });
-
-      }
-    });
-
-  },
-  createForm: (request, response) => {
-    // send response with some data (a HTML file)
-    response.render('new');
-  },
-
-  create: (db) => (request, response) => {
-    db.pokemon.create( request.body, (error, queryResult) => {
-
-        if(error) {
-          console.log('Error running health check query on DB', err)
-          response.sendStatus(500)
-        }
-
-        if( queryResult.rowCount >= 1 ){
-
-          response.send('success');
-        }else{
-
-          response.send('fail');
-        }
-
-    });
-
-    // send response with some data (a HTML file)
-  },
-
-  get: (db) => (request, response) => {
-
-    db.pokemon.get( request.params.id, (error, queryResult) => {
-        if(error) {
-          console.log('Error running health check query on DB', err)
-          response.sendStatus(500)
-        }
-
-        response.send(queryResult.rows[0]);
-    });
-  }
+  get,
+  updateForm,
+  update,
+  createForm,
+  create
 };

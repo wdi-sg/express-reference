@@ -1,12 +1,9 @@
 const express = require('express');
 const handlebars = require('express-handlebars');
-
-// post request libs
 const bodyParser = require('body-parser');
-const methodOverride = require('method-override')
-
-const cookieParser = require('cookie-parser')
-
+const methodOverride = require('method-override');
+const cookieParser = require('cookie-parser');
+const db = require('./db');
 
 /**
  * ===================================
@@ -17,44 +14,45 @@ const cookieParser = require('cookie-parser')
 // Init express app
 const app = express();
 
-
-// post request use
+// Set up middleware
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(methodOverride('_method'))
-
+app.use(methodOverride('_method'));
 app.use(cookieParser());
 
 // Set handlebars to be the default view engine
 app.engine('handlebars', handlebars.create().engine);
 app.set('view engine', 'handlebars');
 
-const db = require('./db');
+/**
+ * ===================================
+ * Routes
+ * ===================================
+ */
 
+// Import routes to match incoming requests
 require('./routes')(app, db);
 
+// Root GET request (it doesn't belong in any controller file)
 app.get('/', (request, response) => {
+  let loggedIn = request.cookies['loggedIn'];
+  let username = request.cookies['username'];
 
-  let visits = request.cookies['visits'];
-  let logged_in = request.cookies['logged_in'];
+  db.pool.query('SELECT * FROM pokemons', (error, queryResult) => {
+    if (error) console.error('error!', error);
 
-  if( visits === undefined ){
-    visits = 1;
-  }else{
-    visits = parseInt( visits ) + 1;
-  }
-
-  response.cookie('visits', visits);
-
-  db.pool.query('SELECT * FROM pokemon', (error, queryResult) => {
     let context = {
-      visits : visits,
-      logged_in : logged_in,
+      loggedIn: loggedIn,
+      username: username,
       pokemon: queryResult.rows
     };
 
     response.render('home', context);
   });
+});
 
+// Catch all unmatched requests and return 404 not found page
+app.get('*', (request, response) => {
+  response.render('404');
 });
 
 /**
@@ -64,10 +62,11 @@ app.get('/', (request, response) => {
  */
 const server = app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
 
+// Run clean up actions when server shuts down
 server.on('close', () => {
-  console.log('Closed express server')
+  console.log('Closed express server');
 
   db.pool.end(() => {
-    console.log('Shut down connection pool')
+    console.log('Shut down db connection pool');
   });
 });

@@ -1,45 +1,35 @@
-# Pokedex Express App (with Postgres SQL)
+# Pokedex Express App (with models and users)
 
-For this exercise, we'll upgrade from storing pokedex data in a plain JSON file to a fully fledged Postgres database. The end result we want is a CRUD app for pokemon with data saved into a database.
+For this exercise, we will abstract SQL queries into model files to declutter our controller files - effectively moving completely into an MVC (model view controller) framework.
 
 ## Getting Started
 
 1.  Fork and clone this repository to your computer
 2.  Run `yarn install` to install dependencies
 3.  Create a new Postgres database by running `createdb pokemons -U <your_username>`
-4.  Run `psql -U <your_username> -d pokemons -a -f tables.sql` to create a `pokemon` table in the database
-5.  Seed data into the newly created `pokemon` table by running `psql -U <your_username> -d pokemons -a -f seed.sql` (Note: this will run 3 INSERT queries to seed 3 pokemon into the table.)
+4.  Run `psql -U <your_username> -d pokemons -a -f tables.sql` - this will create 2 new tables for you - a `pokemons` table and `users` table in the database
+5.  Seed data into the newly created `pokemons` table by running `psql -U <your_username> -d pokemons -a -f seed.sql` (Note: this will run 3 INSERT queries to seed 3 pokemons into the table.)
 6.  Look in the starter file called `index.js`, run `nodemon` to start local server on port 3000
 7.  Open `localhost:3000` on your browser and see the home page
 
 ## Deliverables
 
-The deliverable is an app that has CRUD functionality on pokemons.
+* Add in missing logic implementation in `controllers/pokemon.js` for `updateForm` and `update`
+* Add in missing logic implementation in `controllers/user.js` for `login`
+* Add a "Logout" button on home page that sends POST request to `/users/logout` to log out a user (hint: remember to remove cookies)
+* Ensure that you can create a new user account
+* Ensure that you can create a new pokemon
 
-* GET `/` should return HTML page showing all pokemons currently in database (specifically in the pokemon table within the database)
-* GET `/:id` (eg. `/2`) should return HTML page showing information about pokemon with primary ID 2 (read: primary ID, not `num` property)
-* GET `/new` should return HTML page showing a form to create a new pokemon - upon submit, it should send POST request to `/`
-* POST `/` should create a new pokemon and insert a new entry in the pokemon table, and should redirect to the home page `/`
-* GET `/:id/edit` (eg. `/2/edit`) should return HTML page showing a form pre-populated with that pokemon's data - upon submit, it should send PUT request to `/:id`
-* The `/:id/edit` HTML page should also have a "Delete" button that when clicked, will send a DELETE request to `/:id` to delete the current pokemon
-* PUT `/:id` should update the data of the pokemon with the specified ID, and should redirect to the pokemon detail page `/:id`
-* DELETE `/:id` should delete the entry of the pokemon with the specified ID, and should redirect to the home page `/`
+## Further
 
-## Useful SQL commands
+Add the ability for users to own newly created pokemons.
 
-Note the proceeding commands should be run in a `psql` session on Terminal.
+* Drop the database from earlier and implement a slightly different entity relationship - modify `tables.sql` to create a third table called `user_pokemons` that has a primary key `id`, and 2 foreign keys `pokemon_id` and `user_id`
+* Modify the `pokemon/new.handlebars` file to accept a new field called "user_id"
+* Modify the backend logic to assign any newly created pokemon to the specified user based on the value of the new `user_id` field
+* Update the `user/user.handlebars` file to show all pokemons that a specified user owns (eg. `/users/1` should show the 1st user's account information _and_ names of pokemons that she owns)
 
-View all the data in a table:
-```sql
-SELECT * FROM pokemon;
-```
+## Notes
 
-Delete your database and start again if you made a mistake:
-```sql
-DROP DATABASE pokemons;
-```
-
-Or if you just need to reset the table:
-```sql
-DROP TABLE pokemons;
-```
+* Singular vs plural naming is important. For this exercise, let's assume that the plural of pokemon is pokemons...
+* We have changed our table names to be plural. So user is now users table, and pokemon is now pokemons table.

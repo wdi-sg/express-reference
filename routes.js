@@ -1,43 +1,30 @@
-const pokemon = require('./controllers/pokemon');
-const users = require('./controllers/users');
+const pokemons = require('./controllers/pokemon');
+const users = require('./controllers/user');
 
 module.exports = (app, db) => {
-
   /*
    *  =========================================
-   *  =========================================
-   *  =========================================
-   *
-   *  USERS
-   *
-   *  =========================================
-   *  =========================================
+   *  Users
    *  =========================================
    */
+  // CRUD users
+  app.get('/users/new', users.newForm);
+  app.post('/users', users.create(db));
 
-  app.get('/users/new', users.newform);
-  app.post('/users/new', users.create);
-
+  // Authentication
   app.post('/users/logout', users.logout);
-
-  app.get('/users/login', users.loginform);
+  app.get('/users/login', users.loginForm);
   app.post('/users/login', users.login);
+
   /*
    *  =========================================
-   *  =========================================
-   *  =========================================
-   *
-   *  pokemon
-   *
-   *  =========================================
-   *  =========================================
+   *  Pokemons
    *  =========================================
    */
-
-  app.get('/pokemon/:id/edit', pokemon.updateForm(db));
-  app.post('/pokemon/edit/:id', pokemon.update(db));
-  app.get('/pokemon/new', pokemon.createForm);
-  app.post('/pokemon/new', pokemon.create(db));
-
-  app.get('/pokemon/:id', pokemon.get(db));
+  // CRUD pokemons
+  app.get('/pokemons/:id/edit', pokemons.updateForm(db));
+  app.post('/pokemons/:id/edit', pokemons.update(db));
+  app.get('/pokemons/new', pokemons.createForm);
+  app.post('/pokemons', pokemons.create(db));
+  app.get('/pokemons/:id', pokemons.get(db));
 };
