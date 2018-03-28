@@ -2,6 +2,8 @@
 
 For this exercise, we will abstract SQL queries into model files to declutter our controller files - effectively moving completely into an MVC (model view controller) framework.
 
+We will also be introducing a Users table so users can create accounts on the app.
+
 ## Getting Started
 
 1.  Fork and clone this repository to your computer
