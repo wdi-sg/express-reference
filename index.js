@@ -30,14 +30,14 @@ app.set('view engine', 'handlebars');
  */
 
 // Import routes to match incoming requests
-require('./routes')(app);
+require('./routes')(app, db);
 
 // Root GET request (it doesn't belong in any controller file)
 app.get('/', (request, response) => {
   let loggedIn = request.cookies['loggedIn'];
   let username = request.cookies['username'];
 
-  db.pool.query('SELECT * FROM pokemons', (error, queryResult) => {
+  db.queryInterface('SELECT * FROM pokemons', (error, queryResult) => {
     if (error) console.error('error!', error);
 
     let context = {

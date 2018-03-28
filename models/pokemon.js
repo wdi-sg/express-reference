@@ -3,7 +3,7 @@
  * Export model functions as a module
  * ===========================================
  */
-module.exports = (db) => {
+module.exports = (dbPoolInstance) => {
   // `db` is accessible within this function scope
   return {
     create: (pokemon, callback) => {
@@ -19,7 +19,7 @@ module.exports = (db) => {
       ];
 
       // execute query
-      db.query(queryString, values, (err, queryResult) => {
+      dbPoolInstance.query(queryString, values, (err, queryResult) => {
         // invoke callback function with results after query has executed
         callback(err, queryResult);
       });
@@ -28,7 +28,7 @@ module.exports = (db) => {
     get: (id, callback) => {
       const values = [id];
 
-      db.query('SELECT * from pokemons WHERE id=$1', values, (error, queryResult) => {
+      dbPoolInstance.query('SELECT * from pokemons WHERE id=$1', values, (error, queryResult) => {
         callback(error, queryResult);
       });
     }

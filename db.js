@@ -16,10 +16,18 @@ pool.on('error', function (err) {
 });
 
 module.exports = {
-  pool: pool,
+  /*
+   * ADD APP MODELS HERE
+   */
   pokemon: pokemon(pool),
   user: user(pool),
-  query: (text, params, callback) => {
+
+
+  //make queries directly from here
+  queryInterface: (text, params, callback) => {
     return pool.query(text, params, callback);
-  }
+  },
+
+  // get a reference to end the connection pool at server end
+  pool:pool
 };
