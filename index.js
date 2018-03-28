@@ -20,8 +20,15 @@ app.use(methodOverride('_method'));
 app.use(cookieParser());
 
 // Set handlebars to be the default view engine
-app.engine('handlebars', handlebars.create().engine);
-app.set('view engine', 'handlebars');
+const handlebarsConfigs = {
+  extname: '.handlebars',
+  layoutsDir:'views',
+  defaultLayout: 'layout'
+};
+
+app.engine('.handlebars', handlebars(handlebarsConfigs));
+app.set('view engine', '.handlebars');
+
 
 /**
  * ===================================
@@ -34,6 +41,7 @@ require('./routes')(app, db);
 
 // Root GET request (it doesn't belong in any controller file)
 app.get('/', (request, response) => {
+  console.log("hdhdh");
   let loggedIn = request.cookies['loggedIn'];
   let username = request.cookies['username'];
 
@@ -61,6 +69,9 @@ app.get('*', (request, response) => {
  * ===================================
  */
 const server = app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+server.on('error', (err) => {
+  console.log("error", err );
+});
 
 // Run clean up actions when server shuts down
 server.on('close', () => {
