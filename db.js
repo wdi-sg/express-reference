@@ -18,7 +18,7 @@ if( process.env.DATABASE_URL ){
     ssl: true
   };
 
-else{
+}else{
   configs = {
     user: 'postgres',
     host: '127.0.0.1',
