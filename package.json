@@ -3,11 +3,18 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "engines": {
+    "node": "9.8.0"
+  },
+  "scripts": {
+    "start": "nf start"
+  },
   "dependencies": {
     "bcrypt": "^1.0.3",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
     "express-handlebars": "^3.0.0",
+    "foreman": "^2.0.0",
     "method-override": "^2.3.10",
     "pg": "^7.4.1"
   }
