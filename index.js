@@ -8,8 +8,8 @@ const db = require('./db');
 // Configuring Passport
 const passport = require('passport');
 const expressSession = require('express-session');
+const pgSessionStore = require('connect-pg-simple')(expressSession);
 
-var MemoryStore = require('session-memory-store')(expressSession);
 
 /**
  * ===================================
@@ -27,7 +27,9 @@ app.use(cookieParser());
 
 app.use(expressSession({
     secret: 'mySecretKey',
-    store: new MemoryStore(),
+    store: new pgSessionStore({
+      pool : db.pool
+    }),
     resave: false,
     saveUninitialized: true
 }));
