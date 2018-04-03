@@ -3,6 +3,7 @@ const handlebars = require('express-handlebars');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const db = require('./db');
 
 // Configuring Passport
@@ -23,15 +24,10 @@ const app = express();
 // Set up middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
-app.use(cookieParser());
 
-app.use(expressSession({
-    secret: 'mySecretKey',
-    store: new pgSessionStore({
-      pool : db.pool
-    }),
-    resave: false,
-    saveUninitialized: true
+app.use(cookieParser('MySecret'));
+app.use(cookieSession({
+  secret:'MySecret'
 }));
 
 app.use(passport.initialize());

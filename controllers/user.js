@@ -31,7 +31,6 @@ module.exports = (db, passport) => {
         if (error) { return done(error); }
 
         if (queryResult.rows.length <= 0) {
-          //return done(null, false, { message: 'Incorrect name.' });
           return done(null, false);
         }
 
@@ -42,7 +41,6 @@ module.exports = (db, passport) => {
         let bcCompare = bcrypt.compareSync(password, user.password);
 
         if (!bcCompare) {
-          //return done(null, false, { message: 'Incorrect password.' });
           return done(null, false);
         }
 
