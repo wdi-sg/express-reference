@@ -35,3 +35,9 @@ Add the ability for users to own newly created pokemons.
 
 * Singular vs plural naming is important. For this exercise, let's assume that the plural of pokemon is pokemons...
 * We have changed our table names to be plural. So user is now users table, and pokemon is now pokemons table.
+
+### Postgres session store
+Create the table with this command:
+```
+psql pokemons < node_modules/connect-pg-simple/table.sql
+```
