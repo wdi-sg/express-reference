@@ -1,4 +1,56 @@
-module.exports = (db) => {
+const bcrypt = require('bcrypt');
+
+module.exports = (db, passport) => {
+
+  const LocalStrategy = require('passport-local').Strategy;
+
+  passport.serializeUser(function(user, done) {
+    console.log("serializing the user", user);
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(function(user_id, done) {
+    console.log("deserializing the user, let's get it from the db", user_id);
+    db.user.get(user_id, (error, queryResult) => {
+      let user = queryResult.rows[0];
+      done(null, user);
+    });
+  });
+
+  // login
+  passport.use(new LocalStrategy(
+    {
+      usernameField: 'name',
+      passwordField: 'password'
+    },
+    function(name, password, done) {
+      console.log( "about to make db login query", name, password );
+
+      db.user.getByName(name, (error, queryResult) => {
+
+        if (error) { return done(error); }
+
+        if (queryResult.rows.length <= 0) {
+          //return done(null, false, { message: 'Incorrect name.' });
+          return done(null, false);
+        }
+
+        let user = queryResult.rows[0];
+
+        console.log( "comparing", user, password );
+
+        let bcCompare = bcrypt.compareSync(password, user.password);
+
+        if (!bcCompare) {
+          //return done(null, false, { message: 'Incorrect password.' });
+          return done(null, false);
+        }
+
+        return done(null, user);
+      });
+
+    }
+  ));
 
   /**
    * ===========================================
@@ -9,46 +61,34 @@ module.exports = (db) => {
     response.render('user/new');
   };
 
-  const create = (request, response) => {
-      // use user model method `create` to create new user entry in db
+  passport.use('local-signup', new LocalStrategy({
+        // by default, local strategy uses username and password, we will override with email
+        usernameField : 'name',
+        passwordField : 'password',
+        session: true,
+        passReqToCallback : true // allows us to pass back the entire request to the callback
+    },
+    function(request, name, password, done) {
+
       db.user.create(request.body, (error, queryResult) => {
-        // queryResult of creation is not useful to us, so we ignore it
-        // (console log it to see for yourself)
-        // (you can choose to omit it completely from the function parameters)
 
-        if (error) {
-          console.error('error getting pokemon:', error);
-          response.sendStatus(500);
-        }
+        let user = queryResult.rows[0];
 
-        if (queryResult.rowCount >= 1) {
-          console.log('User created successfully');
+        console.log("user:", user);
 
-          // drop cookies to indicate user's logged in status and username
-          response.cookie('loggedIn', true);
-          response.cookie('username', request.body.name);
-        } else {
-          console.log('User could not be created');
-        }
+        return done(null, user);
 
-        // redirect to home page after creation
-        response.redirect('/');
       });
-  };
+    })
+  );
 
   const logout = (request, response) => {
-    response.clearCookie('loggedIn');
-    response.redirect(301, '/');
+    request.logout();
+    response.redirect('/');
   };
 
   const loginForm = (request, response) => {
     response.render('user/login');
-  };
-
-  const login = (request, response) => {
-    // TODO: Add logic here
-    // Hint: All SQL queries should happen in the corresponding model file
-    // ie. in models/user.js - which method should this controller call on the model?
   };
 
   /**
@@ -58,9 +98,7 @@ module.exports = (db) => {
    */
   return {
     newForm,
-    create,
     logout,
-    loginForm,
-    login
+    loginForm
   };
 };

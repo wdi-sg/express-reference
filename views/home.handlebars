@@ -5,6 +5,14 @@
   <title>Online Pokedex</title>
 </head>
 <body>
+  {{#if isAuthenticated}}
+    <form action="/users/logout" method="POST">
+      <input type="submit" value="logout, {{user.name}}"/>
+    </form>
+  {{else}}
+    <a href="/users/login">login</a>
+    <a href="/users/new">signup</a>
+  {{/if}}
   <h1>Welcome back to the online Pokedex{{#if loggedIn }}, {{username}}{{/if}}!</h1>
   {{#each pokemon}}
     <li>{{this.name}}</li>

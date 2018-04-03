@@ -5,6 +5,12 @@ const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const db = require('./db');
 
+// Configuring Passport
+const passport = require('passport');
+const expressSession = require('express-session');
+
+var MemoryStore = require('session-memory-store')(expressSession);
+
 /**
  * ===================================
  * Configurations and set up
@@ -19,6 +25,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
 
+app.use(expressSession({
+    secret: 'mySecretKey',
+    store: new MemoryStore(),
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Set handlebars to be the default view engine
 app.engine('handlebars', handlebars.create().engine);
 app.set('view engine', 'handlebars');
@@ -30,7 +46,7 @@ app.set('view engine', 'handlebars');
  */
 
 // Import routes to match incoming requests
-require('./routes')(app, db);
+require('./routes')(app, db, passport);
 
 // Root GET request (it doesn't belong in any controller file)
 app.get('/', (request, response) => {
@@ -39,8 +55,11 @@ app.get('/', (request, response) => {
 
   db.queryInterface('SELECT * FROM pokemons', (error, queryResult) => {
     if (error) console.error('error!', error);
+    console.log( request.user );
 
     let context = {
+      isAuthenticated: request.isAuthenticated(),
+      user:request.user,
       loggedIn: loggedIn,
       username: username,
       pokemon: queryResult.rows

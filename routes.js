@@ -1,7 +1,7 @@
-module.exports = (app, db) => {
+module.exports = (app, db, passport) => {
 
-  const pokemons = require('./controllers/pokemon')(db);
-  const users = require('./controllers/user')(db);
+  const pokemons = require('./controllers/pokemon')(db, passport);
+  const users = require('./controllers/user')(db, passport);
 
   /*
    *  =========================================
@@ -10,12 +10,23 @@ module.exports = (app, db) => {
    */
   // CRUD users
   app.get('/users/new', users.newForm);
-  app.post('/users', users.create);
+
+  app.post('/users', passport.authenticate('local-signup', {
+      successRedirect : '/', // redirect to the secure profile section
+      failureRedirect : '/users/new' // redirect back to the signup page if there is an error
+  }));
 
   // Authentication
   app.post('/users/logout', users.logout);
   app.get('/users/login', users.loginForm);
-  app.post('/users/login', users.login);
+  app.post('/users/login', passport.authenticate('local',
+    {
+      successRedirect: '/',
+      failureRedirect: '/users/login',
+      failureFlash: false,
+      successFlash: false
+    })
+  );
 
   /*
    *  =========================================
