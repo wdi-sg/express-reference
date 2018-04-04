@@ -8,25 +8,65 @@ module.exports = (app, db, passport) => {
    *  Users
    *  =========================================
    */
+
   // CRUD users
   app.get('/users/new', users.newForm);
 
-  app.post('/users', passport.authenticate('local-signup', {
-      successRedirect : '/', // redirect to the secure profile section
-      failureRedirect : '/users/new' // redirect back to the signup page if there is an error
-  }));
+  /*
+   *
+   *
+   *
+   * passport signup
+   *
+  */
 
-  // Authentication
-  app.post('/users/logout', users.logout);
+  // to use a passport strategy for signup
+  // same as in the user controller
+  let namedStrategy = 'local-signup';
+
+  // configure the behavior of passport when we try to do signup
+  signupAuthConfig = {
+    successRedirect : '/',
+    failureRedirect : '/users/new'
+  };
+
+  // signup() returns a passport callback
+  let signupCallback = passport.authenticate(namedStrategy, signupAuthConfig)
+
+  app.post('/users', signupCallback);
+
+  /*
+   *
+   *
+   *
+   * passport login
+   *
+  */
+
+  const localStrategyAuthConfig = {
+    successRedirect: '/',
+    failureRedirect: '/users/login',
+    failureFlash: false,
+    successFlash: false
+  };
+
+  let localStrategy = 'local';
+
+  //login returns a passport callback
+  let loginCallback = passport.authenticate(localStrategy, localStrategyAuthConfig);
+  app.post('/users/login', loginCallback);
+
   app.get('/users/login', users.loginForm);
-  app.post('/users/login', passport.authenticate('local',
-    {
-      successRedirect: '/',
-      failureRedirect: '/users/login',
-      failureFlash: false,
-      successFlash: false
-    })
-  );
+
+  /*
+   *
+   *
+   *
+   * logout
+   *
+  */
+  app.post('/users/logout', users.logout);
+
 
   /*
    *  =========================================

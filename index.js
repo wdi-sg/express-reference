@@ -48,18 +48,16 @@ require('./routes')(app, db, passport);
 
 // Root GET request (it doesn't belong in any controller file)
 app.get('/', (request, response) => {
-  let loggedIn = request.cookies['loggedIn'];
-  let username = request.cookies['username'];
 
   db.queryInterface('SELECT * FROM pokemons', (error, queryResult) => {
     if (error) console.error('error!', error);
-    console.log( request.user );
+
+    //we will have a user in the request, deserialized now, thanks to passport
+    console.log("request user", request.user );
 
     let context = {
       isAuthenticated: request.isAuthenticated(),
       user:request.user,
-      loggedIn: loggedIn,
-      username: username,
       pokemon: queryResult.rows
     };
 
