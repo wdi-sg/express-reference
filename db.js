@@ -1,33 +1,32 @@
-const pg = require('pg');
 const pokemon = require('./models/pokemon');
 const user = require('./models/user');
 
+//mongodb://localhost:27017/animals
 const configs = {
-  user: 'postgres',
-  host: '127.0.0.1',
+  host: 'localhost',
   database: 'pokemons',
-  port: 5432
+  poolSize:10,
+  port: 27017
 };
 
-const pool = new pg.Pool(configs);
-
-pool.on('error', function (err) {
-  console.log('idle client error', err.message, err.stack);
-});
-
-module.exports = {
-  /*
-   * ADD APP MODELS HERE
-   */
-  pokemon: pokemon(pool),
-  user: user(pool),
 
 
-  //make queries directly from here
-  queryInterface: (text, params, callback) => {
-    return pool.query(text, params, callback);
-  },
+var MongoClient = require('mongodb').MongoClient;
 
-  // get a reference to end the connection pool at server end
-  pool:pool
+module.exports = (connectionCallback) => {
+  let mongoUrl = "mongodb://" + configs.host + ":" + configs.port
+
+  MongoClient.connect(mongoUrl, function (err, client) {
+    if (err) throw err
+
+    let mongo = client.db(configs.database);
+
+    let exportsObject = {
+      mongo:mongo,
+      pokemon: pokemon(mongo),
+      user: user(mongo),
+    };
+
+    connectionCallback(exportsObject);
+  });
 };

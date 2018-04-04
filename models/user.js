@@ -5,25 +5,21 @@ const bcrypt = require('bcrypt');
  * Export model functions as a module
  * ===========================================
  */
-module.exports = (dbPoolInstance) => {
+module.exports = (mongo) => {
+
     const create = (user, callback) => {
       // run user input password through bcrypt to obtain hashed password
       bcrypt.hash(user.password, 1, (err, hashed) => {
         if (err) console.error('error!', err);
 
-        // set up query
-        const queryString = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3)';
-        const values = [
-          user.name,
-          user.email,
-          hashed
-        ];
+        mongo.collection('users').insertOne(user, function(mongoError, res) {
+          if (err) throw err;
 
-        // execute query
-        dbPoolInstance.query(queryString, values, (error, queryResult) => {
-          // invoke callback function with results after query has executed
-          callback(error, queryResult);
+          console.log("1 document inserted");
+
+          callback(mongoError, res);
         });
+
       });
     };
 
