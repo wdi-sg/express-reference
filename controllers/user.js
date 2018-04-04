@@ -28,17 +28,6 @@ module.exports = (db, passport) => {
   // this matches the name in routes.js
   let namedStrategy = 'local-signup';
 
-  // configure the behavior of passport when we try to do signup
-  signupAuthConfig = {
-    successRedirect : '/',
-    failureRedirect : '/users/new'
-  };
-
-  const getSignupCallback = () => {
-    // passport.authenticate returns the function being set to the express route
-    return passport.authenticate(namedStrategy, signupAuthConfig);
-  };
-
   const signupVerifyCallback = (request, name, password, done) => {
 
     db.user.create(request.body, (error, queryResult) => {
