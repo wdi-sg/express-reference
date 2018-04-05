@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 module.exports = (db) => {
 
   /**
@@ -5,19 +7,43 @@ module.exports = (db) => {
    * Controller logic
    * ===========================================
    */
+
+  const getAll = (request, response) => {
+
+    db.user.getAll((error, queryResult) => {
+      if (error) {
+        console.error('error getting:', error);
+      }
+
+      queryResult.toArray((toArrayError, result) => {
+
+        if (toArrayError) console.error('error!', toArrayError);
+
+        response.send(result);
+      });
+
+    });
+  };
+
   const newForm = (request, response) => {
     response.render('user/new');
   };
 
   const create = (request, response) => {
-      // use user model method `create` to create new user entry in db
-      db.user.create(request.body, (error, queryResult) => {
-        // queryResult of creation is not useful to us, so we ignore it
-        // (console log it to see for yourself)
-        // (you can choose to omit it completely from the function parameters)
+
+
+    bcrypt.hash(request.body.password, 1, (err, hashed) => {
+      if (err) console.error('error!', err);
+
+      let user = {
+        name : request.body.name,
+        password: hashed
+      };
+
+      db.user.create(user, (error, queryResult) => {
 
         if (error) {
-          console.error('error getting pokemon:', error);
+          console.error('error creating user:', error);
           response.sendStatus(500);
         }
 
@@ -34,6 +60,7 @@ module.exports = (db) => {
         // redirect to home page after creation
         response.redirect('/');
       });
+    });
   };
 
   const logout = (request, response) => {
@@ -46,9 +73,44 @@ module.exports = (db) => {
   };
 
   const login = (request, response) => {
-    // TODO: Add logic here
-    // Hint: All SQL queries should happen in the corresponding model file
-    // ie. in models/user.js - which method should this controller call on the model?
+    console.log("sdfsd", request.body.name);
+
+    db.user.getByUsername(request.body.name, (error, queryResult) => {
+      console.log("HERRRR"); //, queryResult.length);
+
+      if (error) {
+        console.error('error getting user:', error);
+        response.sendStatus(403);
+        return;
+      }
+
+      bcrypt.compare(request.body.password, queryResult.password, function(err, res) {
+
+        if (err) {
+          console.error('BCRYPT error:', err);
+          response.sendStatus(403);
+          return;
+        }
+
+        if (res === true) {
+          console.log('User created successfully');
+
+          // drop cookies to indicate user's logged in status and username
+          response.cookie('loggedIn', true);
+          response.cookie('username', request.body.name);
+        } else {
+          console.log('User could not be created');
+          response.send(403);
+          return;
+        }
+
+        // redirect to home page after creation
+        response.redirect('/');
+
+      });
+    });
+
+
   };
 
   /**
@@ -57,6 +119,7 @@ module.exports = (db) => {
    * ===========================================
    */
   return {
+    getAll,
     newForm,
     create,
     logout,

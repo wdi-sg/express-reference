@@ -9,39 +9,61 @@ module.exports = (mongo) => {
 
     const create = (user, callback) => {
       // run user input password through bcrypt to obtain hashed password
-      bcrypt.hash(user.password, 1, (err, hashed) => {
-        if (err) console.error('error!', err);
 
-        mongo.collection('users').insertOne(user, function(mongoError, res) {
-          if (err) throw err;
+        mongo.collection('users').insertOne(user, (mongoError, res) => {
+          if (mongoError) throw err;
 
           console.log("1 document inserted");
 
           callback(mongoError, res);
         });
 
-      });
     };
+    const getAll = (callback) => {
+
+      mongo.collection('users').find((mongoError, res) => {
+        if (mongoError) throw err;
+
+        console.log("1 document gotten");
+
+        callback(mongoError, res);
+      });
+
+    };
+
+
 
     const get = (id, callback) => {
-      // set up query
-      const queryString = 'SELECT * from users WHERE id=$1';
-      const values = [id];
 
-      // execute query
-      dbPoolInstance.query(queryString, values, (error, queryResult) => {
-        // invoke callback function with results after query has executed
-        callback(error, queryResult);
+      mongo.collection('users').find(id, (mongoError, res) => {
+        if (mongoError) throw err;
+
+        console.log("1 document gotten");
+
+        callback(mongoError, res);
       });
+
     };
 
-    const login = (user, callback) => {
-      // TODO: Add logic here
+    const getByUsername = (username, callback) => {
+
+      let queryObject = {
+        'name' : username
+      };
+
+      mongo.collection('users').findOne(queryObject, (mongoError, res) => {
+        if (mongoError) throw err;
+
+        console.log("1 document gotten", res);
+
+        callback(mongoError, res);
+      });
     }
 
     return {
       create,
       get,
-      login
+      getAll,
+      getByUsername
     };
 };
