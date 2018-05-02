@@ -14,8 +14,15 @@ const FILE = 'pokedex.json';
 const app = express();
 
 // Set handlebars to be the default view engine
-app.engine('handlebars', handlebars.create().engine);
-app.set('view engine', 'handlebars');
+//app.engine('handlebars', handlebars.create().engine);
+//app.set('view engine', 'handlebars');
+//
+const reactEngine = require('express-react-views').createEngine();
+
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.engine('jsx', reactEngine);
 
 /**
  * ===================================
