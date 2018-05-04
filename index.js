@@ -1,9 +1,7 @@
 const express = require('express');
-const handlebars = require('express-handlebars');
 const jsonfile = require('jsonfile');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-
 const FILE = 'pokedex.json';
 
 /**
@@ -15,9 +13,11 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
-// Set handlebars to be the default view engine
-app.engine('handlebars', handlebars.create().engine);
-app.set('view engine', 'handlebars');
+// Set react-views to be the default view engine
+const reactEngine = require('express-react-views').createEngine();
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.engine('jsx', reactEngine);
 
 // Set static folder
 app.use(express.static('public'));
@@ -50,7 +50,7 @@ app.get('/:id/edit', (request, response) => {
 
     if (pokemon === undefined) {
       // return 404 HTML page if pokemon not found
-      response.render('404');
+      response.render('NotFound');
     } else {
       // return edit form HTML page if found
       let context = {
@@ -74,7 +74,7 @@ app.get('/:id', (request, response) => {
 
     if (pokemon === undefined) {
       // return 404 HTML page if pokemon not found
-      response.render('404');
+      response.render('NotFound');
     } else {
       // return pokemon HTML page if found
       let context = {
