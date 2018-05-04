@@ -1,18 +1,14 @@
-var React = require('react');
+var React = require("react");
 
 class Pokemon extends React.Component {
   render() {
-
     return (
-
       <html>
-        <head></head>
+        <head />
         <body>
           <div>
             <ul className="pokemon-list">
-              <li className="pokemon-attribute">
-                id: {this.props.pokemon.id}
-              </li>
+              <li className="pokemon-attribute">id: {this.props.pokemon.id}</li>
               <li className="pokemon-attribute">
                 num: {this.props.pokemon.num}
               </li>
