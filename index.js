@@ -1,5 +1,4 @@
 const express = require('express');
-const handlebars = require('express-handlebars');
 const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
