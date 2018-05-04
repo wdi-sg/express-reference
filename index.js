@@ -13,13 +13,8 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
-// Set handlebars to be the default view engine
-//app.engine('handlebars', handlebars.create().engine);
-//app.set('view engine', 'handlebars');
-//
+// Set react-views to be the default view engine
 const reactEngine = require('express-react-views').createEngine();
-
-
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
 app.engine('jsx', reactEngine);
@@ -45,14 +40,14 @@ app.get('/:id', (request, response) => {
 
     if (pokemon === undefined) {
       // send 404 back
-      response.render('404');
+      response.render('NotFound');
     } else {
       let context = {
         pokemon: pokemon
       };
 
       // send html file back with pokemon's data
-      response.render('pokemon', context);
+      response.render('Pokemon', context);
     }
   });
 });
