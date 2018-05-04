@@ -8,7 +8,9 @@ class Pokemon extends React.Component {
         <body>
           <div>
             <ul className="pokemon-list">
-              <li className="pokemon-attribute">id: {this.props.pokemon.id}</li>
+              <li className="pokemon-attribute">
+                id: {this.props.pokemon.id}
+              </li>
               <li className="pokemon-attribute">
                 num: {this.props.pokemon.num}
               </li>
