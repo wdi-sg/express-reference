@@ -1,12 +1,10 @@
 const express = require('express');
-const handlebars = require('express-handlebars');
 
-// post request libs
+const jsonfile = require('jsonfile');
 const bodyParser = require('body-parser');
-const methodOverride = require('method-override')
-
+const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser')
-
+const FILE = 'pokedex.json';
 
 /**
  * ===================================
@@ -17,16 +15,22 @@ const cookieParser = require('cookie-parser')
 // Init express app
 const app = express();
 
+// Set react-views to be the default view engine
+const reactEngine = require('express-react-views').createEngine();
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.engine('jsx', reactEngine);
 
-// post request use
+// Set static folder
+app.use(express.static('public'));
+
+// Set up body-parser to automatically parse form data into object
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(methodOverride('_method'))
 
 app.use(cookieParser());
+// Set up method-override for PUT and DELETE forms
+app.use(methodOverride('_method'));
 
-// Set handlebars to be the default view engine
-app.engine('handlebars', handlebars.create().engine);
-app.set('view engine', 'handlebars');
 
 /**
  * ===================================
