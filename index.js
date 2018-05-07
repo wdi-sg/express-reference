@@ -42,30 +42,6 @@ app.get('/new', (request, response) => {
   response.render('New');
 });
 
-app.get('/:id/edit', (request, response) => {
-  jsonfile.readFile(FILE, (err, obj) => {
-    if (err) console.error(err);
-
-    // attempt to retrieve the requested pokemon
-    let inputId = request.params.id;
-    let pokemon = obj.pokemon.find((currentPokemon) => {
-      return currentPokemon.id === parseInt(inputId, 10);
-    });
-
-    if (pokemon === undefined) {
-      // return 404 HTML page if pokemon not found
-      response.render('NotFound');
-    } else {
-      // return edit form HTML page if found
-      let context = {
-        pokemon: pokemon
-      };
-
-      response.render('edit', context);
-    }
-  });
-});
-
 app.get('/:id', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
     if (err) console.error(err);
