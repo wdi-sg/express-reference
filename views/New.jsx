@@ -6,7 +6,7 @@ class New extends React.Component {
       <html>
         <head />
         <body>
-          <form className="pokemon-form" method="POST" action="/">
+          <form className="pokemon-form"  method="POST" action="/">
             <div className="pokemon-attribute">
               id:<input name="id" type="text" />
             </div>
@@ -25,7 +25,7 @@ class New extends React.Component {
             <div className="pokemon-attribute">
               weight:<input name="weight" type="text" />
             </div>
-            <input name="submit" type="submit" />
+            <input type="submit" value="Submit"></input>
           </form>
         </body>
       </html>

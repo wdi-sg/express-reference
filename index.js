@@ -35,7 +35,7 @@ app.use(methodOverride('_method'));
  */
 app.get('/new', (request, response) => {
   // send response with some data
-  response.render('new');
+  response.render('New');
 });
 
 app.get('/:id/edit', (request, response) => {
@@ -96,8 +96,8 @@ app.get('/', (request, response) => {
 app.post('/', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
     if (err) console.error(err);
-
     let newPokemon = request.body;
+    console.log(newPokemon)
     obj.pokemon.push(newPokemon);
 
     jsonfile.writeFile(FILE, obj, (err2) => {
