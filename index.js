@@ -123,7 +123,7 @@ app.get("/edit/:id", (request, response) => {
   });
 });
 
-app.post("/edit/:id", (request, response) => {
+app.put("/edit/:id", (request, response) => {
   // send response with some data (a HTML file)
 
   // get my json from the file
