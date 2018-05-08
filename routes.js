@@ -35,7 +35,7 @@ module.exports = (app) => {
    */
 
   app.get('/edit/:id', pokemon.updateForm);
-  app.post('/edit/:id', pokemon.update);
+  app.put('/edit/:id', pokemon.update);
   app.get('/new', pokemon.createForm);
   app.post('/new', pokemon.create);
   app.get('/:id', pokemon.get);

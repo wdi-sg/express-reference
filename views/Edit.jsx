@@ -10,79 +10,79 @@ class Edit extends React.Component {
           <form
             className="pokemon-form"
             method="POST"
-            action={"/"+ this.props.pokemon.id + "?_method=PUT"}
+            action={"/edit/"+ this.props.pokemon.id + "?_method=PUT"}
           >
             <div className="pokemon-attribute">
-              id:<input name="id" type="text" value={this.props.pokemon.id} />
+              id:<input name="id" type="text" defaultValue={this.props.pokemon.id} />
             </div>
             <div className="pokemon-attribute">
               num:<input
                 name="num"
                 type="text"
-                value={this.props.pokemon.num}
+                defaultValue={this.props.pokemon.num}
               />
             </div>
             <div className="pokemon-attribute">
               name:<input
                 name="name"
                 type="text"
-                value={this.props.pokemon.name}
+                defaultValue={this.props.pokemon.name}
               />
             </div>
             <div className="pokemon-attribute">
               img:<input
                 name="img"
                 type="text"
-                value={this.props.pokemon.img}
+                defaultValue={this.props.pokemon.img}
               />
             </div>
             <div className="pokemon-attribute">
               height:<input
                 name="height"
                 type="text"
-                value={this.props.pokemon.height}
+                defaultValue={this.props.pokemon.height}
               />
             </div>
             <div className="pokemon-attribute">
               weight:<input
                 name="weight"
                 type="text"
-                value={this.props.pokemon.weight}
+                defaultValue={this.props.pokemon.weight}
               />
             </div>
             <div className="pokemon-attribute">
               candy:<input
                 name="candy"
                 type="text"
-                value={this.props.pokemon.candy}
+                defaultValue={this.props.pokemon.candy}
               />
             </div>
             <div className="pokemon-attribute">
               candy_count:<input
                 name="candy_count"
                 type="text"
-                value={this.props.pokemon.candy_count}
+                defaultValue={this.props.pokemon.candy_count}
               />
             </div>
             <div className="pokemon-attribute">
               egg:<input
                 name="egg"
                 type="text"
-                value={this.props.pokemon.egg}
+                defaultValue={this.props.pokemon.egg}
               />
             </div>
             <div className="pokemon-attribute">
               avg_spawns:<input
                 name="avg_spawns"
                 type="text"
-                value={this.props.pokemon.avg_spawns}
+                defaultValue={this.props.pokemon.avg_spawns}
               />
             </div>
             <div className="pokemon-attribute">
               spawn_time:<input
                 name="spawn_time"
                 type="text"
-                value={this.props.pokemon.spawn_time}
+                defaultValue={this.props.pokemon.spawn_time}
               />
             </div>
             <input name="submit" type="submit" />

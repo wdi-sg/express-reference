@@ -94,7 +94,7 @@ module.exports = {
 
       jsonfile.writeFile(FILE, obj, (err) => {
         console.error(err)
-        response.render('NotFound');
+        response.redirect('/');
       });
     });
 
