@@ -58,7 +58,7 @@ app.get('/', (request, response) => {
     logged_in : logged_in
   };
 
-  response.render('home', context);
+  response.render('Home', context);
 });
 
 /**

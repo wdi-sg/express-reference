@@ -24,7 +24,7 @@ module.exports = {
 
       if( pokemon === null ){
 
-        response.render('404');
+        response.render('NotFound');
       }else{
         let context = {
           pokemon : pokemon
@@ -61,7 +61,7 @@ module.exports = {
 
       if( pokemon === null ){
 
-        response.render('404');
+        response.render('NotFound');
       }else{
 
         jsonfile.writeFile(FILE, obj, (err) => {
@@ -94,7 +94,7 @@ module.exports = {
 
       jsonfile.writeFile(FILE, obj, (err) => {
         console.error(err)
-        response.render('404');
+        response.render('NotFound');
       });
     });
 
@@ -106,7 +106,6 @@ module.exports = {
 
       // get my json from the file
     jsonfile.readFile(FILE, (err, obj) => {
-
       // obj is the pokedex json file
 
       // deal with the request
@@ -122,14 +121,14 @@ module.exports = {
 
       if( pokemon === null ){
 
-        response.render('404');
+        response.render('NotFound');
       }else{
         let context = {
           pokemon : pokemon
         };
-
+        console.log(pokemon)
         // send something back
-        response.render('pokemon', context);
+        response.render('Pokemon', context);
 
       }
     });

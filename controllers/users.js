@@ -1,20 +1,19 @@
 const jsonfile = require('jsonfile');
-const FILE = 'pokedex.json';
+const FILE = 'users.json';
 
 const bcrypt = require('bcrypt');
 
 module.exports = {
-
   // new user form
   newform: (request, response) => {
     // send response with some data (a HTML file)
-    response.render('newuser');
+    response.render('NewUser');
   },
 
   create: (request, response) => {
 
     jsonfile.readFile(FILE, (err, obj) => {
-
+        console.log("file object", obj)
         bcrypt.hash(request.body.password, 1, function(err, hash) {
 
           let new_user = {
@@ -44,7 +43,7 @@ module.exports = {
 
   loginform:  (request, response) => {
     // send response with some data (a HTML file)
-    response.render('login');
+    response.render('Login');
   },
 
   login: (request, response) => {
