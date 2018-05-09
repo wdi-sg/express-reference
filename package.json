@@ -3,18 +3,26 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "engines": {
+    "node": "10.0.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^2.0.1",
     "connect-pg-simple": "^4.2.1",
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.3",
     "express": "^4.16.3",
-    "express-handlebars": "^3.0.0",
+    "express-react-views": "^0.10.5",
     "express-session": "^1.15.6",
     "method-override": "^2.3.10",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "pg": "^7.4.1",
+    "pg": "^7.4.3",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
     "session-memory-store": "^0.2.2"
   }
 }

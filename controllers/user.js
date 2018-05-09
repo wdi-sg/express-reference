@@ -10,7 +10,7 @@ module.exports = (db, passport) => {
    * ===========================================
    */
   const newForm = (request, response) => {
-    response.render('user/new');
+    response.render('user/NewUser');
   };
 
   /**
