@@ -14,7 +14,7 @@ module.exports = (db) => {
           response.sendStatus(500);
         } else {
           // render pokemon.handlebars in the pokemon folder
-          response.render('pokemon/pokemon', { pokemon: queryResult.rows[0] });
+          response.render('pokemon/Pokemon', { pokemon: queryResult.rows[0] });
         }
       });
   };
@@ -28,7 +28,7 @@ module.exports = (db) => {
   };
 
   const createForm = (request, response) => {
-    response.render('pokemon/new');
+    response.render('pokemon/New');
   };
 
   const create = (request, response) => {
