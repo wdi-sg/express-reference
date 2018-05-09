@@ -10,7 +10,7 @@ class Edit extends React.Component {
           <form
             className="pokemon-form"
             method="POST"
-            action={"/edit/"+ this.props.pokemon.id + "?_method=PUT"}
+            action={"pokemons/edit/"+ this.props.pokemon.id + "?_method=PUT"}
           >
             <div className="pokemon-attribute">
               id:<input name="id" type="text" defaultValue={this.props.pokemon.id} />
