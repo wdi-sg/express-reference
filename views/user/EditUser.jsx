@@ -8,7 +8,7 @@ class EditUser extends Component {
           <form
             class="user-form"
             method="POST"
-            action={"/edit/"+ this.props.user.id + "?_method=PUT"}
+            action={"/users/edit/"+ this.props.user.id + "?_method=PUT"}
           >
             <div class="user-attribute">
               name: <input name="name" type="text" DefaultValue="{{user.name}}" />
