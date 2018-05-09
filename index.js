@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-const exphbs = require('express-handlebars');
 const { Client } = require('pg');
 
 // Initialise postgres client
@@ -25,10 +24,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
 
-// Set handlebars to be the default view engine
-app.engine('handlebars', exphbs.create().engine);
-app.set('view engine', 'handlebars');
-
+// Set react-views to be the default view engine
+const reactEngine = require('express-react-views').createEngine();
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.engine('jsx', reactEngine);
 
 /**
  * ===================================
@@ -44,14 +44,14 @@ app.get('/', (req, res) => {
 
 app.get('/new', (request, response) => {
   // respond with HTML page with form to create new pokemon
-  response.render('new');
+  response.render('New');
 });
 
 
-app.post('/pokemon', (req, response) => {
+app.post('/pokemons', (req, response) => {
   let params = req.body;
 
-  const queryString = 'INSERT INTO pokemon(name, height) VALUES($1, $2)'
+  const queryString = 'INSERT INTO pokemons(name, height) VALUES($1, $2)'
   const values = [params.name, params.height];
 
   client.connect((err) => {
