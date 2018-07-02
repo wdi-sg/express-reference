@@ -1,5 +1,4 @@
 const express = require('express');
-const handlebars = require('express-handlebars');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
@@ -19,9 +18,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
 
-// Set handlebars to be the default view engine
-app.engine('handlebars', handlebars.create().engine);
-app.set('view engine', 'handlebars');
+// Set react-views to be the default view engine
+const reactEngine = require('express-react-views').createEngine();
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.engine('jsx', reactEngine);
 
 /**
  * ===================================
@@ -46,13 +47,13 @@ app.get('/', (request, response) => {
       pokemon: queryResult.rows
     };
 
-    response.render('home', context);
+    response.render('Home', context);
   });
 });
 
 // Catch all unmatched requests and return 404 not found page
 app.get('*', (request, response) => {
-  response.render('404');
+  response.render('NotFound');
 });
 
 /**

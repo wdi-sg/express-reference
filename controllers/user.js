@@ -6,7 +6,7 @@ module.exports = (db) => {
    * ===========================================
    */
   const newForm = (request, response) => {
-    response.render('user/new');
+    response.render('user/NewUser');
   };
 
   const create = (request, response) => {
@@ -17,7 +17,7 @@ module.exports = (db) => {
         // (you can choose to omit it completely from the function parameters)
 
         if (error) {
-          console.error('error getting pokemon:', error);
+          console.error('error getting user:', error);
           response.sendStatus(500);
         }
 

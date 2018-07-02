@@ -13,8 +13,8 @@ module.exports = (db) => {
           console.error('error getting pokemon:', error);
           response.sendStatus(500);
         } else {
-          // render pokemon.handlebars in the pokemon folder
-          response.render('pokemon/pokemon', { pokemon: queryResult.rows[0] });
+          // render pokemon view in the pokemon folder
+          response.render('pokemon/Pokemon', { pokemon: queryResult.rows[0] });
         }
       });
   };
