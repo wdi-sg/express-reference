@@ -1,4 +1,7 @@
 ####### NODE
+.floo
+.flooignore
+package-lock.json
 
 # Logs
 logs
