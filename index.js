@@ -1,10 +1,9 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-const { Client } = require('pg');
+const pg = require('pg');
 
 // Initialise postgres client
-const client = new Client({
+const pool = new pg.Pool({
   user: 'akira',
   host: '127.0.0.1',
   database: 'pokemons',
@@ -20,9 +19,11 @@ const client = new Client({
 // Init express app
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
+// Set up middleware
 app.use(methodOverride('_method'));
-
+app.use(express.urlencoded({
+  extended: true
+}));
 
 // Set react-views to be the default view engine
 const reactEngine = require('express-react-views').createEngine();
@@ -38,7 +39,9 @@ app.engine('jsx', reactEngine);
 
 app.get('/', (req, res) => {
   // query database for all pokemon
-
+  pool.query('SELECT * FROM pokemons', (error, queryResult) => {
+    if (error) console.error('error!', error);
+  });
   // respond with HTML page displaying all pokemon
 });
 
@@ -54,10 +57,10 @@ app.post('/pokemons', (req, response) => {
   const queryString = 'INSERT INTO pokemons(name, height) VALUES($1, $2)'
   const values = [params.name, params.height];
 
-  client.connect((err) => {
+  pool.on((err) => {
     if (err) console.error('connection error:', err.stack);
 
-    client.query(queryString, values, (err, res) => {
+    pool.query(queryString, values, (err, res) => {
       if (err) {
         console.error('query error:', err.stack);
       } else {
@@ -66,7 +69,6 @@ app.post('/pokemons', (req, response) => {
         // redirect to home page
         response.redirect('/');
       }
-      client.end();
     });
   });
 });
