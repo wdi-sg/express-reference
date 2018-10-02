@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 
 const pg = require('pg');
@@ -30,9 +29,10 @@ pool.on('error', function (err) {
 // Init express app
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
-
+app.use(express.urlencoded({
+  extended: true
+}));
 
 // Set react-views to be the default view engine
 const reactEngine = require('express-react-views').createEngine();
