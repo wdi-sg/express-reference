@@ -1,6 +1,5 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const FILE = 'pokedex.json';
 
@@ -23,7 +22,9 @@ app.engine('jsx', reactEngine);
 app.use(express.static('public'));
 
 // Set up body-parser to automatically parse form data into object
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+  extended: true
+}));
 
 // Set up method-override for PUT and DELETE forms
 app.use(methodOverride('_method'));
