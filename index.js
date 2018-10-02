@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
@@ -21,8 +20,10 @@ const pgSessionStore = require('connect-pg-simple')(expressSession);
 const app = express();
 
 // Set up middleware
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(express.urlencoded({
+  extended: true
+}));
 
 app.use(cookieParser('MySecret'));
 app.use(cookieSession({
