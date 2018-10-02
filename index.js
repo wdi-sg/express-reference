@@ -1,6 +1,4 @@
 const express = require('express');
-const handlebars = require('express-handlebars');
-const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 require('./db')((db) => {
@@ -15,9 +13,11 @@ require('./db')((db) => {
   const app = express();
 
   // Set up middleware
-  app.use(bodyParser.urlencoded({ extended: true }));
   app.use(methodOverride('_method'));
   app.use(cookieParser());
+  app.use(express.urlencoded({
+  extended: true
+}));
 
   // Set handlebars to be the default view engine
   app.engine('handlebars', handlebars.create().engine);
