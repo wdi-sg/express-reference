@@ -57,7 +57,7 @@ app.post('/pokemons', (req, response) => {
   const queryString = 'INSERT INTO pokemons(name, height) VALUES($1, $2)'
   const values = [params.name, params.height];
 
-  pool.on((err) => {
+  pool.on('error', (err, client) => {
     if (err) console.error('connection error:', err.stack);
 
     pool.query(queryString, values, (err, res) => {
