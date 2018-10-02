@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const db = require('./db');
@@ -14,9 +13,11 @@ const db = require('./db');
 const app = express();
 
 // Set up middleware
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
+app.use(express.urlencoded({
+  extended: true
+}));
 
 // Set react-views to be the default view engine
 const reactEngine = require('express-react-views').createEngine();
