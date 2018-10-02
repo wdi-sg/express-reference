@@ -1,6 +1,7 @@
 const express = require('express');
-const handlebars = require('express-handlebars');
 const jsonfile = require('jsonfile');
+const methodOverride = require('method-override');
+const cookieParser = require('cookie-parser');
 
 const FILE = 'pokedex.json';
 
@@ -13,9 +14,19 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
-// Set handlebars to be the default view engine
-app.engine('handlebars', handlebars.create().engine);
-app.set('view engine', 'handlebars');
+// Set up middleware
+app.use(methodOverride('_method'));
+app.use(express.static('public'))
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
+// Set react-views to be the default view engine
+const reactEngine = require('express-react-views').createEngine();
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.engine('jsx', reactEngine);
 
 /**
  * ===================================
