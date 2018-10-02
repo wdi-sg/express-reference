@@ -60,7 +60,7 @@ app.post('/pokemons', (req, response) => {
   pool.on('error', (err, client) => {
     if (err) console.error('connection error:', err.stack);
 
-    pool.query(queryString, values, (err, res) => {
+    client.query(queryString, values, (err, res) => {
       if (err) {
         console.error('query error:', err.stack);
       } else {
