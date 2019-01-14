@@ -8,22 +8,37 @@ const bcrypt = require('bcrypt');
 module.exports = (dbPoolInstance) => {
     const create = (user, callback) => {
       // run user input password through bcrypt to obtain hashed password
-      bcrypt.hash(user.password, 1, (err, hashed) => {
-        if (err) console.error('error!', err);
+      // set up query
+      const queryString = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *';
+      const values = [
+        user.name,
+        user.email,
+        user.password
+      ];
 
-        // set up query
-        const queryString = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3)';
-        const values = [
-          user.name,
-          user.email,
-          hashed
-        ];
+      // execute query
+      dbPoolInstance.query(queryString, values, (error, queryResult) => {
 
-        // execute query
-        dbPoolInstance.query(queryString, values, (error, queryResult) => {
+        if( error ){
+
+          console.log("query error", error)
+
           // invoke callback function with results after query has executed
-          callback(error, queryResult);
-        });
+          callback(error, null);
+
+        }else{
+
+          // invoke callback function with results after query has executed
+
+          if( queryResult.rows.length > 0 ){
+            callback(null, queryResult.rows[0]);
+
+          }else{
+            callback(null, null);
+
+          }
+        }
+
       });
     };
 

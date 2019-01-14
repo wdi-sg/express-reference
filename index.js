@@ -36,25 +36,12 @@ require('./routes')(app, db);
 
 // Root GET request (it doesn't belong in any controller file)
 app.get('/', (request, response) => {
-  let loggedIn = request.cookies['loggedIn'];
-  let username = request.cookies['username'];
-
-  db.queryInterface('SELECT * FROM pokemons', (error, queryResult) => {
-    if (error) console.error('error!', error);
-
-    let context = {
-      loggedIn: loggedIn,
-      username: username,
-      pokemon: queryResult.rows
-    };
-
-    response.render('Home', context);
-  });
+  response.render('home');
 });
 
 // Catch all unmatched requests and return 404 not found page
 app.get('*', (request, response) => {
-  response.render('NotFound');
+  response.render('notfound');
 });
 
 /**
@@ -66,11 +53,13 @@ const PORT = process.env.PORT || 3000;
 
 const server = app.listen(PORT, () => console.log('~~~ Tuning in to the waves of port '+PORT+' ~~~'));
 
-// Run clean up actions when server shuts down
-server.on('close', () => {
-  console.log('Closed express server');
+let onClose = function(){
 
-  db.pool.end(() => {
-    console.log('Shut down db connection pool');
-  });
-});
+  server.close(() => {
+    console.log('Process terminated')
+    db.pool.end( () => console.log('Shut down db connection pool'));
+  })
+};
+
+process.on('SIGTERM', onClose);
+process.on('SIGINT', onClose);

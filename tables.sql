@@ -1,17 +1,29 @@
 -- create pokemons table
 CREATE TABLE IF NOT EXISTS pokemons (
   id SERIAL PRIMARY KEY,
-  num varchar(255),
-  name varchar(255),
-  img varchar(255),
-  weight varchar(255),
-  height varchar(255)
-);
+  num TEXT,
+  name TEXT,
+  img TEXT,
+  weight TEXT,
+  height TEXT);
 
 -- create users table
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
-  name varchar(255),
-  email varchar(255),
-  password varchar(255)
+  name TEXT,
+  email TEXT,
+  password TEXT
+);
+
+
+-- types table
+CREATE TABLE IF NOT EXISTS types (
+  id SERIAL PRIMARY KEY,
+  pokemon_type TEXT
+);
+
+CREATE TABLE IF NOT EXISTS pokemon_types (
+  id SERIAL PRIMARY KEY,
+  pokemon_id INTEGER,
+  type_id INTEGER
 );

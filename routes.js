@@ -23,7 +23,9 @@ module.exports = (app, db) => {
    *  =========================================
    */
 
-  app.get('/pokemon/:id', pokemons.get);
+  app.get('/pokemons', pokemons.index);
+  app.get('/pokemons/:id', pokemons.get);
+  app.get('/pokemons/types/:id', pokemons.getByType);
   app.get('/pokemons/:id/edit', pokemons.updateForm);
   app.post('/pokemons/:id/edit', pokemons.update);
   app.get('/pokemons/new', pokemons.createForm);

@@ -5,35 +5,65 @@ module.exports = (db) => {
    * Controller logic
    * ===========================================
    */
-  const get = (request, response) => {
+
+  let index = (request, response) => {
+
+      db.pokemon.getAllTypes((error, types) => {
+        response.render('pokemon/index', { types });
+      });
+
+
+  };
+
+  let getByType = (request, response) => {
+    response.send('tbd');
+  };
+
+  let get = (request, response) => {
+
       // use pokemon model method `get` to retrieve pokemon data
-      db.pokemon.get(request.params.id, (error, queryResult) => {
+
+      db.pokemon.get(request.params.id, (error, pokemon) => {
         // queryResult contains pokemon data returned from the pokemon model
         if (error) {
-          console.error('error getting pokemon:', error);
-          response.sendStatus(500);
+
+          console.error('error getting pokemon', error);
+          response.status(500);
+          response.send('server error');
+
         } else {
-          // render pokemon view in the pokemon folder
-          response.render('pokemon/Pokemon', { pokemon: queryResult.rows[0] });
+
+          if( pokemon === null ){
+
+            // render pokemon view in the pokemon folder
+            response.status(404);
+            response.send('not found');
+
+          }else{
+
+            // render pokemon view in the pokemon folder
+            response.render('pokemon/pokemon', { pokemon: pokemon });
+
+          }
         }
       });
   };
 
-  const updateForm = (request, response) => {
+  let updateForm = (request, response) => {
       // TODO: Add logic here
   };
 
-  const update = (request, response) => {
+  let update = (request, response) => {
       // TODO: Add logic here
   };
 
-  const createForm = (request, response) => {
+  let createForm = (request, response) => {
     response.render('pokemon/new');
   };
 
-  const create = (request, response) => {
+  let create = (request, response) => {
       // use pokemon model method `create` to create new pokemon entry in db
-      db.pokemon.create(request.body, (error, queryResult) => {
+      db.pokemon.create(request.body, (error, pokemon) => {
         // queryResult of creation is not useful to us, so we ignore it
         // (console log it to see for yourself)
         // (you can choose to omit it completely from the function parameters)
@@ -43,7 +73,7 @@ module.exports = (db) => {
           response.sendStatus(500);
         }
 
-        if (queryResult.rowCount >= 1) {
+        if (pokemon) {
           console.log('Pokemon created successfully');
         } else {
           console.log('Pokemon could not be created');
@@ -59,7 +89,9 @@ module.exports = (db) => {
    * ===========================================
    */
   return {
+    index,
     get,
+    getByType,
     updateForm,
     update,
     createForm,
